@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 interface PolaroidProps {
   image: string;
@@ -11,7 +12,12 @@ const Polaroid: React.FC<PolaroidProps> = ({ image, description, alt }) => {
   return (
     <div className="polaroid-card min-w-80 bg-white p-4 pb-6 shadow-xl m-4 transition-transform duration-300 hover:-rotate-2 hover:scale-105 relative before:absolute before:inset-0 before:shadow-md before:content-[''] before:z-[-1]">
       <div className="mb-4 h-80 overflow-hidden">
-        <img src={image} alt={alt} className="w-full h-full object-cover" />
+        <img
+          src={image}
+          alt={alt}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
       </div>
       <div className="polaroid-text text-sm text-black p-2 text-center">
         {description}
@@ -22,6 +28,21 @@ const Polaroid: React.FC<PolaroidProps> = ({ image, description, alt }) => {
 
 const Moments: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Use intersection observer to only animate when in view
+  const { ref: inViewRef, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+
+  // Combine both refs
+  const setRefs = (node: HTMLDivElement | null) => {
+    scrollRef.current = node;
+    if (typeof inViewRef === "function") {
+      inViewRef(node);
+    }
+  };
 
   const polaroids = [
     {
@@ -44,7 +65,6 @@ const Moments: React.FC = () => {
       description: "Solana Breakpoint - Singapore 2024",
       alt: "Solana Breakpoint",
     },
-
     {
       image: "/moments/delhi-meetup.jpeg",
       description: "Delhi Tech Meetup 2024",
@@ -60,7 +80,6 @@ const Moments: React.FC = () => {
       description: "Avocado Connect - Bennett University",
       alt: "Delhi Tech Meetup",
     },
-
     {
       image: "/moments/first-time-speaker.jpeg",
       description: "Appwrite Developer Meetup - Delhi",
@@ -78,38 +97,52 @@ const Moments: React.FC = () => {
     },
   ];
 
-  // Auto-scrolling effect
+  // Optimized auto-scrolling effect
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
     let animationId: number;
+    let lastTimestamp: number = 0;
     let scrollPos = 0;
+    const scrollSpeed = 0.5; // Reduced from 1.5 for better performance
 
-    const scroll = () => {
-      if (!scrollContainer) return;
+    // Calculate max scroll position once
+    const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
 
-      scrollPos += 1.5; // Adjust speed here
+    const scroll = (timestamp: number) => {
+      if (!scrollContainer || isPaused || !inView) return;
 
-      // Reset position to create infinite scroll effect
-      if (scrollPos >= scrollContainer.scrollWidth / 2) {
-        scrollPos = 0;
-        scrollContainer.scrollLeft = 0;
-      } else {
+      // Throttle animation to reduce CPU usage
+      if (timestamp - lastTimestamp > 16) {
+        // ~60fps max
+        lastTimestamp = timestamp;
+
+        scrollPos += scrollSpeed;
+
+        // Check if we need to reset - only when necessary
+        if (scrollPos >= maxScroll) {
+          scrollPos = 0;
+        }
+
         scrollContainer.scrollLeft = scrollPos;
       }
 
       animationId = requestAnimationFrame(scroll);
     };
 
-    scroll();
+    // Only start animation if component is in view
+    if (inView && !isPaused) {
+      animationId = requestAnimationFrame(scroll);
+    }
 
-    // Pause scrolling when hovering
     const handleMouseEnter = () => {
+      setIsPaused(true);
       cancelAnimationFrame(animationId);
     };
 
     const handleMouseLeave = () => {
+      setIsPaused(false);
       animationId = requestAnimationFrame(scroll);
     };
 
@@ -121,7 +154,7 @@ const Moments: React.FC = () => {
       scrollContainer.removeEventListener("mouseenter", handleMouseEnter);
       scrollContainer.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, [inView, isPaused]);
 
   return (
     <div className="py-8">
@@ -137,12 +170,12 @@ const Moments: React.FC = () => {
 
       <div className="relative w-full overflow-hidden">
         <div
-          ref={scrollRef}
+          ref={setRefs}
           className="flex carousel overflow-x-auto scrollbar-hide py-4"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {/* Double the polaroids to create seamless loop */}
-          {[...polaroids, ...polaroids].map((polaroid, index) => (
+          {/* Add polaroids with repeated items at the end for seamless looping */}
+          {polaroids.concat(polaroids.slice(0, 5)).map((polaroid, index) => (
             <Polaroid
               key={index}
               image={polaroid.image}

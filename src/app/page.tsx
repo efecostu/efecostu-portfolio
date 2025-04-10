@@ -8,6 +8,7 @@ import Projects from "./components/Projects";
 import Work from "./components/Work";
 import Moments from "./components/Moments";
 import ComingSoon from "./components/Newsletter";
+// import Crab from "./components/Crab";
 
 export default function Home() {
   return (
