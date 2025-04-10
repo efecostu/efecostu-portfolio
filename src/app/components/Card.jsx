@@ -99,10 +99,14 @@ function Band({ maxSpeed = 50, minSpeed = 10, position = [0, 0, 0] }) {
     linearDamping: 3,  // Increased from 2 for more stability
   };
   const { nodes, materials } = useGLTF(
-    "http://localhost:3000/Dakshie.glb"
+    process.env.NODE_ENV === 'development'
+      ? "http://localhost:3000/Dakshie.glb"
+      : "https://itsmehi.vercel.app//Dakshie.glb"
   );
   const texture = useTexture(
-    "http://localhost:3000/band.png"
+    process.env.NODE_ENV === 'development'
+      ? "http://localhost:3000/band.png"
+      : "https://itsmehi.vercel.app//band.png"
   );
   const { width, height } = useThree((state) => state.size);
   const [curve] = useState(
