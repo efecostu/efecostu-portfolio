@@ -32,12 +32,12 @@ export default function Home() {
           </div>
           <hr className="border-t relative w-screen left-[50%] right-[50%] -translate-x-[50%] my-8" />
           {/* Content after hero section */}
-          <div className="relative min-h-[70vh] w-full z-0">
+          <div className="relative min-h-[50vh] w-full z-0">
             <Projects />
           </div>
 
           <hr className="border-t relative w-screen left-[50%] right-[50%] -translate-x-[50%] my-8" />
-          <div className="relative min-h-[70vh] w-full z-0">
+          <div className="relative min-h-[50vh] w-full z-0">
             <Work />
           </div>
           <hr className="border-t relative w-screen left-[50%] right-[50%] -translate-x-[50%] my-8" />

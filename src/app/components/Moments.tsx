@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 
 interface PolaroidProps {
@@ -28,7 +28,6 @@ const Polaroid: React.FC<PolaroidProps> = ({ image, description, alt }) => {
 
 const Moments: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
 
   // Use intersection observer to only animate when in view
   const { ref: inViewRef, inView } = useInView({
@@ -97,7 +96,7 @@ const Moments: React.FC = () => {
     },
   ];
 
-  // Optimized auto-scrolling effect
+  // Continuous auto-scrolling effect that doesn't pause on hover
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
@@ -105,13 +104,13 @@ const Moments: React.FC = () => {
     let animationId: number;
     let lastTimestamp: number = 0;
     let scrollPos = 0;
-    const scrollSpeed = 0.5; // Reduced from 1.5 for better performance
+    const scrollSpeed = 0.5; // Slow and steady scroll speed
 
     // Calculate max scroll position once
     const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
 
     const scroll = (timestamp: number) => {
-      if (!scrollContainer || isPaused || !inView) return;
+      if (!scrollContainer || !inView) return;
 
       // Throttle animation to reduce CPU usage
       if (timestamp - lastTimestamp > 16) {
@@ -120,7 +119,7 @@ const Moments: React.FC = () => {
 
         scrollPos += scrollSpeed;
 
-        // Check if we need to reset - only when necessary
+        // Reset when we reach the end - jump back to start smoothly
         if (scrollPos >= maxScroll) {
           scrollPos = 0;
         }
@@ -132,29 +131,14 @@ const Moments: React.FC = () => {
     };
 
     // Only start animation if component is in view
-    if (inView && !isPaused) {
+    if (inView) {
       animationId = requestAnimationFrame(scroll);
     }
 
-    const handleMouseEnter = () => {
-      setIsPaused(true);
-      cancelAnimationFrame(animationId);
-    };
-
-    const handleMouseLeave = () => {
-      setIsPaused(false);
-      animationId = requestAnimationFrame(scroll);
-    };
-
-    scrollContainer.addEventListener("mouseenter", handleMouseEnter);
-    scrollContainer.addEventListener("mouseleave", handleMouseLeave);
-
     return () => {
       cancelAnimationFrame(animationId);
-      scrollContainer.removeEventListener("mouseenter", handleMouseEnter);
-      scrollContainer.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [inView, isPaused]);
+  }, [inView]);
 
   return (
     <div className="py-8">
