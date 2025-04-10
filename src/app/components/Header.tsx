@@ -8,7 +8,7 @@ function Header() {
 
   return (
     <div>
-      <div className="flex justify-between items-center p-3 w-full">
+      <div className="flex justify-between items-center p-3 w-full z-20">
         <div className="flex items-center">
           <div className="text-base text-[var(--primary)]">Dakshi Goel</div>
         </div>

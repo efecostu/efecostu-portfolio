@@ -31,13 +31,13 @@ export default function RootLayout({
           {/* Main content container with margin lines */}
           <div className="relative mx-auto max-w-screen-xl">
             {/* Left margin dotted line */}
-            <div className="absolute left-8 top-0 bottom-0 border-l border-dotted border-[var(--border)] border-opacity-40 h-full"></div>
+            <div className="absolute left-8 top-0 bottom-0 border-l border-dotted border-[var(--border)] border-opacity-40 h-full overflow-hidden"></div>
 
             {/* Right margin dotted line */}
-            <div className="absolute right-8 top-0 bottom-0 border-l border-dotted border-[var(--border)] border-opacity-40 h-full"></div>
+            <div className="absolute right-8 top-0 bottom-0 border-l border-dotted border-[var(--border)] border-opacity-40 h-full overflow-hidden"></div>
 
             {/* Main content */}
-            <div className="px-12">{children}</div>
+            <div className="px-[34px]">{children}</div>
           </div>
         </div>
       </body>

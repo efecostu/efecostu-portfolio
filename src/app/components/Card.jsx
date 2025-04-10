@@ -2,6 +2,7 @@
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
 import { Canvas, extend, useThree, useFrame } from "@react-three/fiber";
+
 import {
   useGLTF,
   useTexture,
@@ -27,21 +28,30 @@ useTexture.preload(
 );
 
 export default function Card() {
-
   return (
-    <div className="fixed inset-0 right-0 top-0 bottom-0 z-10 pointer-events-none">
+    <div
+      className="sticky top-0 right-0 h-screen pointer-events-none z-10"
+      style={{
+        position: 'sticky',
+        top: 0,
+        width: '50%',
+        right: 0,
+        left: 'auto',
+        marginLeft: '50%'
+      }}
+    >
       <Canvas
         camera={{ position: [0, 0, 13], fov: 25 }}
-        className="pointer-events-auto"
+        className="pointer-events-auto overflow-visible"
         gl={{ alpha: true, antialias: true, premultipliedAlpha: false }}
       >
         <ambientLight intensity={Math.PI} />
         <Physics
           interpolate
           gravity={[0, -40, 0]}
-          timeStep={1 / 120} // Increased from 1/60 for smoother physics
+          timeStep={1 / 120}
         >
-          <Band position={[2, 0, 0]} /> {/* Moved the Band component to the right */}
+          <Band position={[0, 0, 0]} />
         </Physics>
         <Environment background={false}>
           <Lightformer

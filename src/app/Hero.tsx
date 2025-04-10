@@ -80,7 +80,7 @@ const SocialLink: React.FC<SocialLinkProps> = ({ href, label }) => {
 
 const Hero: React.FC = () => {
   return (
-    <div className="py-8 px-4 min-h-[70vh] flex flex-col items-start z-20">
+    <div className="py-8 px-4 min-h-[70vh] flex flex-col items-start">
       <h1 className="text-3xl font-bold mb-6 text-[var(--foreground)]">
         hi, i am dakshi
       </h1>
