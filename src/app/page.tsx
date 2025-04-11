@@ -68,7 +68,7 @@ export default function Home() {
         {/* Main content area */}
         <div className="relative">
           {/* Header with higher z-index to appear above card */}
-          <header className="relative z-20" ref={headerRef}>
+          <header className="relative z-20 " ref={headerRef}>
             <Header />
           </header>
 
@@ -105,6 +105,7 @@ export default function Home() {
           <div className="relative min-h-[50vh] w-full z-0" id="thoughts">
             <ComingSoon />
           </div>
+          <hr className="border-t relative w-screen left-[50%] right-[50%] -translate-x-[50%] my-8" />
         </div>
       </div>
     </ThemeProvider>
