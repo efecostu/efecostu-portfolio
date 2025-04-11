@@ -9,14 +9,28 @@ function Header() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = 20; // 20px offset from the top
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      // Get the viewport height
+      const viewportHeight = window.innerHeight;
+      // Get the element's position relative to the viewport
+      const elementRect = element.getBoundingClientRect();
+      // Calculate the scroll position to center the element
+      const scrollPosition =
+        window.scrollY +
+        elementRect.top -
+        viewportHeight / 2 +
+        elementRect.height / 2;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+      // Special handling for first and last sections
+      if (sectionId === "hero") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (sectionId === "thoughts") {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
+      } else {
+        window.scrollTo({ top: scrollPosition, behavior: "smooth" });
+      }
     }
   };
 
