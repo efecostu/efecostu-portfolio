@@ -34,15 +34,16 @@ export default function Card() {
       style={{
         position: 'sticky',
         top: 0,
-        width: '50%',
+        width: '40%',
         right: 0,
         left: 'auto',
-        marginLeft: '50%'
+        marginLeft: '60%',
+        maxHeight: '891px'
       }}
     >
       <Canvas
         camera={{ position: [0, 0, 13], fov: 25 }}
-        className="pointer-events-auto overflow-visible"
+        className="pointer-events-auto overflow-visible border-l border-dotted border-[var(--border)] border-opacity-40"
         gl={{ alpha: true, antialias: true, premultipliedAlpha: false }}
       >
         <ambientLight intensity={Math.PI} />
