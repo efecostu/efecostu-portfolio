@@ -10,8 +10,8 @@ interface PolaroidProps {
 
 const Polaroid: React.FC<PolaroidProps> = ({ image, description, alt }) => {
   return (
-    <div className="polaroid-card min-w-80 bg-white p-4 pb-6 shadow-xl m-4 transition-transform duration-300 hover:-rotate-2 hover:scale-105 relative before:absolute before:inset-0 before:shadow-md before:content-[''] before:z-[-1]">
-      <div className="mb-4 h-80 overflow-hidden">
+    <div className="polaroid-card min-w-[200px] sm:min-w-80 bg-white p-2 sm:p-4 pb-4 sm:pb-6 shadow-xl m-2 sm:m-4 transition-transform duration-300 hover:-rotate-2 hover:scale-105 relative before:absolute before:inset-0 before:shadow-md before:content-[''] before:z-[-1]">
+      <div className="mb-2 sm:mb-4 h-48 sm:h-80 overflow-hidden">
         <img
           src={image}
           alt={alt}
@@ -19,7 +19,7 @@ const Polaroid: React.FC<PolaroidProps> = ({ image, description, alt }) => {
           loading="lazy"
         />
       </div>
-      <div className="polaroid-text text-sm text-black p-2 text-center">
+      <div className="polaroid-text text-xs sm:text-sm text-black p-1 sm:p-2 text-center">
         {description}
       </div>
     </div>
@@ -152,10 +152,10 @@ const Moments: React.FC = () => {
         </p>
       </div>
 
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full overflow-x-hidden overflow-y-visible">
         <div
           ref={setRefs}
-          className="flex carousel overflow-x-auto scrollbar-hide py-4"
+          className="flex carousel overflow-x-auto scrollbar-hide !overflow-y-visible py-4"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {/* Add polaroids with repeated items at the end for seamless looping */}
