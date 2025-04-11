@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* Theme transition class */
+.theme-transition,
+.theme-transition *,
+.theme-transition *:before,
+.theme-transition *:after {
+  transition: all 0.3s ease-in-out !important;
+  transition-delay: 0 !important;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

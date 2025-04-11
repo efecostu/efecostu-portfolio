@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { useTheme } from "../theme-provider";
@@ -6,6 +6,35 @@ import { useTheme } from "../theme-provider";
 function Header() {
   const { theme, setTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Add effect to handle theme transition
+  useEffect(() => {
+    // Add transition class to body when component mounts
+    document.documentElement.classList.add("theme-transition");
+
+    // Remove transition after changes are complete to prevent unwanted transitions
+    const handleTransitionEnd = () => {
+      document.documentElement.classList.remove("theme-transition");
+    };
+
+    document.documentElement.addEventListener(
+      "transitionend",
+      handleTransitionEnd
+    );
+
+    return () => {
+      document.documentElement.removeEventListener(
+        "transitionend",
+        handleTransitionEnd
+      );
+    };
+  }, []);
+
+  // Add transition class before theme change and remove it after
+  const handleThemeChange = () => {
+    document.documentElement.classList.add("theme-transition");
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -32,9 +61,8 @@ function Header() {
       } else {
         window.scrollTo({ top: scrollPosition, behavior: "smooth" });
       }
+      setIsMenuOpen(false);
     }
-    // Close menu after clicking a link on mobile
-    setIsMenuOpen(false);
   };
 
   return (
@@ -44,87 +72,9 @@ function Header() {
           <div className="text-base text-[var(--primary)]">Dakshi Goel</div>
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Mobile menu button */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-md bg-transparent hover:bg-[var(--accent)] transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? (
-                <X className="h-5 w-5 text-[var(--muted-foreground)]" />
-              ) : (
-                <Menu className="h-5 w-5 text-[var(--muted-foreground)]" />
-              )}
-            </button>
-          </div>
-
-          {/* Theme toggle - always visible */}
-          <button
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className="p-2 rounded-md bg-transparent hover:bg-[var(--accent)] transition-colors"
-            aria-label="Toggle theme"
-          >
-            {theme === "light" ? (
-              <Moon className="h-[18px] w-[18px] text-[var(--muted-foreground)]" />
-            ) : (
-              <Sun className="h-[18px] w-[18px] text-[var(--muted-foreground)]" />
-            )}
-          </button>
-
-          {/* Desktop navigation */}
-          <div className="hidden lg:flex items-center gap-4">
-            <ul className="flex items-center gap-4 social-link">
-              <li>
-                <button
-                  onClick={() => scrollToSection("hero")}
-                  className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-                >
-                  about
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("projects")}
-                  className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-                >
-                  projects
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("work")}
-                  className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-                >
-                  work
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("moments")}
-                  className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-                >
-                  moments
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("thoughts")}
-                  className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-                >
-                  thoughts
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      {isMenuOpen && (
-        <div className="lg:hidden bg-background border-b border-[var(--border)]">
-          <ul className="flex flex-col items-center gap-4 py-4">
+        <div className="flex items-center gap-4">
+          {/* Desktop Navigation */}
+          <ul className="hidden sm:flex items-center gap-4 social-link">
             <li>
               <button
                 onClick={() => scrollToSection("hero")}
@@ -161,6 +111,80 @@ function Header() {
               <button
                 onClick={() => scrollToSection("thoughts")}
                 className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+              >
+                thoughts
+              </button>
+            </li>
+          </ul>
+
+          {/* Theme Toggle */}
+          <button
+            onClick={handleThemeChange}
+            className="p-2 rounded-md bg-transparent hover:bg-[var(--accent)] transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === "light" ? (
+              <Moon className="h-[18px] w-[18px] text-[var(--muted-foreground)]" />
+            ) : (
+              <Sun className="h-[18px] w-[18px] text-[var(--muted-foreground)]" />
+            )}
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="sm:hidden p-2 rounded-md hover:bg-[var(--accent)] transition-colors"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <X className="h-[18px] w-[18px] text-[var(--muted-foreground)]" />
+            ) : (
+              <Menu className="h-[18px] w-[18px] text-[var(--muted-foreground)]" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation Menu */}
+      {isMenuOpen && (
+        <div className="sm:hidden fixed inset-0 top-[57px] bg-background z-50">
+          <ul className="flex flex-col items-center gap-6 pt-8">
+            <li>
+              <button
+                onClick={() => scrollToSection("hero")}
+                className="text-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+              >
+                about
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => scrollToSection("projects")}
+                className="text-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+              >
+                projects
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => scrollToSection("work")}
+                className="text-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+              >
+                work
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => scrollToSection("moments")}
+                className="text-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+              >
+                moments
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => scrollToSection("thoughts")}
+                className="text-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
               >
                 thoughts
               </button>
