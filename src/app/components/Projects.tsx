@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface ProjectProps {
   title: string;
@@ -105,11 +105,12 @@ const projects = [
     preview: "/projects/writingpad-preview.mov",
   },
   {
-    title: "Sail On",
-    link: "https://marketplace.visualstudio.com/items?itemName=dakshie.sail-on",
-    logo: "/projects/sailon.png",
-    description: "A mini boat game that one can play in VS Code.",
-    preview: "/projects/sailon-preview.mov",
+    title: "Wave Rider",
+    link: "https://marketplace.visualstudio.com/items?itemName=dakshie.waverider",
+    logo: "/projects/waverider.png",
+    description:
+      "A mini surfing game that one can play in VS Code while coding.",
+    preview: "/projects/waverider-preview.mov",
   },
   {
     title: "Jobwrite",
@@ -129,7 +130,25 @@ const projects = [
   },
 ];
 
+const preloadMedia = (preview: string) => {
+  const img = new Image();
+  img.src = preview;
+
+  if (
+    preview.endsWith(".mp4") ||
+    preview.endsWith(".webm") ||
+    preview.endsWith(".mov")
+  ) {
+    const video = document.createElement("video");
+    video.src = preview;
+  }
+};
+
 const Projects: React.FC = () => {
+  useEffect(() => {
+    projects.forEach(({ preview }) => preloadMedia(preview));
+  }, []);
+
   return (
     <div className="py-8 px-4">
       <h1 className="text-3xl font-bold mb-6 text-[var(--foreground)]">
