@@ -102,12 +102,12 @@ function Band({ maxSpeed = 50, minSpeed = 10, position = [0, 0, 0] }) {
   const { nodes, materials } = useGLTF(
     process.env.NODE_ENV === 'development'
       ? "http://localhost:3000/Dakshie.glb"
-      : "https://itsmehi.vercel.app//Dakshie.glb"
+      : "https://dakshie.xyz//Dakshie.glb"
   );
   const texture = useTexture(
     process.env.NODE_ENV === 'development'
       ? "http://localhost:3000/band.png"
-      : "https://itsmehi.vercel.app//band.png"
+      : "https://dakshie.xyz//band.png"
   );
   const { width, height } = useThree((state) => state.size);
   const [curve] = useState(
