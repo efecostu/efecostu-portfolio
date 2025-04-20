@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Header from "./components/Header";
-import Hero from "./Hero";
+import Hero from "./components/Hero";
 import Card from "./components/Card";
 import { ThemeProvider } from "./theme-provider";
 import Projects from "./components/Projects";
