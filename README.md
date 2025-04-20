@@ -42,6 +42,10 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the site.
 
+## References
+- [Vercel card guide](https://x.com/0xca0a)
+- [hashnode newsletter integration](https://www.vistosocreative.com/blog/how-to-integrate-hashnode-newsletter-subscription-into-your-nextjs-website)
+
 ## Issues
 
 Found a bug? or Have a cool idea? or just want to contribute? Go ahead and open an issue.
