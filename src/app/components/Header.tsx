@@ -53,7 +53,7 @@ function Header() {
       // Special handling for first and last sections
       if (sectionId === "hero") {
         window.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (sectionId === "thoughts") {
+      } else if (sectionId === "newsletter") {
         window.scrollTo({
           top: document.documentElement.scrollHeight,
           behavior: "smooth",
@@ -109,10 +109,10 @@ function Header() {
             </li>
             <li>
               <button
-                onClick={() => scrollToSection("thoughts")}
+                onClick={() => scrollToSection("newsletter")}
                 className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
               >
-                thoughts
+                newsletter
               </button>
             </li>
           </ul>
@@ -183,10 +183,10 @@ function Header() {
             </li>
             <li>
               <button
-                onClick={() => scrollToSection("thoughts")}
+                onClick={() => scrollToSection("newsletter")}
                 className="text-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
               >
-                thoughts
+                newsletter
               </button>
             </li>
           </ul>
