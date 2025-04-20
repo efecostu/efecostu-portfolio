@@ -7,8 +7,16 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { email } = body;
 
-    // Use the actual publication ID directly
-    const publicationId = "63dbff94f76a5c7a9df82f77"; // Your Hashnode publication ID
+    // Get publication ID from environment variables
+    const publicationId = process.env.HASHNODE_PUBLICATION_ID;
+
+    if (!publicationId) {
+      console.error("Missing HASHNODE_PUBLICATION_ID environment variable");
+      return NextResponse.json(
+        { message: "Server configuration error" },
+        { status: 500 }
+      );
+    }
 
     // GraphQL query to subscribe to newsletter
     const requestBody = {

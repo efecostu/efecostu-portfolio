@@ -1,10 +1,8 @@
-# itsmehi 
+# itsmehi
 
 A modern and clean peronal website.
 
-
 https://github.com/user-attachments/assets/6a1f5259-8953-4be1-a057-fcbcb13811e2
-
 
 ## Tech Stack
 
@@ -24,6 +22,15 @@ npm install
 # or
 yarn install
 ```
+
+Create a `.env.local` file in the root directory based on `.env.example`:
+
+```bash
+NODE_ENV=development
+HASHNODE_PUBLICATION_ID=your_hashnode_publication_id
+```
+
+You'll need to set your actual Hashnode publication ID in the HASHNODE_PUBLICATION_ID variable for newsletter functionality to work.
 
 Then, run the development server:
 
