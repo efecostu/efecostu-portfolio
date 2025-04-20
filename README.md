@@ -1,16 +1,10 @@
-# itsmehi | Dakshi Goel's Personal Website
+# itsmehi 
 
-A modern, responsive personal website built with Next.js and React, featuring a clean design with dark and light mode support.
+A modern and clean peronal website.
 
-## About
 
-This site showcases my work as a developer, including:
+https://github.com/user-attachments/assets/6a1f5259-8953-4be1-a057-fcbcb13811e2
 
-- About me
-- Projects
-- Work experience
-- Moments (photography/personal highlights)
-- Newsletter
 
 ## Tech Stack
 
@@ -41,18 +35,10 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the site.
 
-## Features
+## Issues
 
-- Responsive design that works on all devices
-- Dynamic theme switching (light/dark mode)
-- Smooth scrolling between sections
-- Interactive tooltips
-- Modern UI with clean typography
-
-## Contact
-
-Feel free to reach out through the contact information on the website.
+Found a bug? or Have a cool idea? or just want to contribute? Go ahead and open an issue.
 
 ## License
 
-This project is private and not licensed for public use.
+This project is under MIT license
