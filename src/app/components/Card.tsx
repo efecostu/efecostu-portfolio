@@ -167,14 +167,14 @@ function Band({
   const gltf = useGLTF(
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000/Dakshie.glb"
-      : "https://dakshie.xyz//Dakshie.glb"
+      : "https://dakshie.xyz/Dakshie.glb"
   );
   const { nodes, materials } = gltf as unknown as CustomGLTFResult;
 
   const texture = useTexture(
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000/band.png"
-      : "https://dakshie.xyz//band.png"
+      : "https://dakshie.xyz/band.png"
   );
   const { width, height } = useThree((state) => state.size);
   const [curve] = useState(
