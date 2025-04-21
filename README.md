@@ -26,11 +26,11 @@ yarn install
 Create a `.env.local` file in the root directory based on `.env.example`:
 
 ```bash
-NODE_ENV=development
-HASHNODE_PUBLICATION_ID=your_hashnode_publication_id
+NODE_ENV=
+HASHNODE_PUBLICATION_ID=
 ```
 
-You'll need to set your actual Hashnode publication ID in the HASHNODE_PUBLICATION_ID variable for newsletter functionality to work.
+You'll need to set your actual Hashnode publication ID from hashnode dashboard.
 
 Then, run the development server:
 
@@ -41,6 +41,10 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the site.
+
+## References
+- [Vercel card guide](https://x.com/0xca0a)
+- [hashnode newsletter integration](https://www.vistosocreative.com/blog/how-to-integrate-hashnode-newsletter-subscription-into-your-nextjs-website)
 
 ## Issues
 
