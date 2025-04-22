@@ -81,9 +81,12 @@ const CompanyLogo: React.FC<CompanyLogoProps> = ({
       rel="noopener noreferrer"
       className={`relative w-12 h-12 rounded-full border-2 border-[var(--background)] overflow-hidden ${
         zIndex < 40 ? "-ml-4" : ""
-      } z-${zIndex} transition-transform duration-200 hover:scale-110`}
+      } hover:z-50 transition-all duration-200 ${
+        isHovered ? "scale-110 z-50" : `z-${zIndex}`
+      }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      style={{ zIndex: isHovered ? 50 : zIndex }}
     >
       <img src={src} alt={alt} className="w-full h-full object-contain" />
       {isHovered && (
