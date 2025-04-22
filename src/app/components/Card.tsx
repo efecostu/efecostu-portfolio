@@ -27,23 +27,7 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 useGLTF.preload("/moments/Dakshie.glb");
 useTexture.preload("/band.png");
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      meshLineGeometry: React.ComponentProps<"mesh">;
-      meshLineMaterial: React.ComponentProps<"meshBasicMaterial"> & {
-        color?: string;
-        depthTest?: boolean;
-        resolution?: [number, number];
-        useMap?: boolean;
-        map?: THREE.Texture;
-        repeat?: [number, number];
-        lineWidth?: number;
-        transparent?: boolean;
-      };
-    }
-  }
-}
+
 
 interface MeshLineRef {
   geometry: {
