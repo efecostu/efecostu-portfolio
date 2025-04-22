@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 interface PolaroidProps {
@@ -8,34 +8,25 @@ interface PolaroidProps {
   alt: string;
 }
 
-const Polaroid: React.FC<PolaroidProps> = ({ image, description, alt }) => {
-  return (
-    <div className="polaroid-card min-w-[200px] sm:min-w-80 bg-white p-2 sm:p-4 pb-4 sm:pb-6 shadow-xl m-2 sm:m-4 transition-transform duration-300 hover:-rotate-2 hover:scale-105 relative before:absolute before:inset-0 before:shadow-md before:content-[''] before:z-[-1]">
-      <div className="mb-2 sm:mb-4 h-48 sm:h-80 overflow-hidden">
-        <img
-          src={image}
-          alt={alt}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </div>
-      <div className="polaroid-text text-xs sm:text-sm text-black p-1 sm:p-2 text-center">
-        {description}
-      </div>
+const Polaroid: React.FC<PolaroidProps> = ({ image, description, alt }) => (
+  <div className="polaroid-card min-w-[200px] sm:min-w-80 bg-white p-2 sm:p-4 pb-4 sm:pb-6 shadow-xl m-2 sm:m-4 transition-transform duration-300 hover:-rotate-2 hover:scale-105 relative before:absolute before:inset-0 before:shadow-md before:content-[''] before:z-[-1]">
+    <div className="mb-2 sm:mb-4 h-48 sm:h-80 overflow-hidden">
+      <img src={image} alt={alt} className="w-full h-full object-cover" loading="lazy" />
     </div>
-  );
-};
+    <div className="polaroid-text text-xs sm:text-sm text-black p-1 sm:p-2 text-center">
+      {description}
+    </div>
+  </div>
+);
 
 const Moments: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { ref: inViewRef, inView } = useInView({ threshold: 0.1, triggerOnce: false });
 
-  // Use intersection observer to only animate when in view
-  const { ref: inViewRef, inView } = useInView({
-    threshold: 0.1,
-    triggerOnce: false,
-  });
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Combine both refs
   const setRefs = (node: HTMLDivElement | null) => {
     scrollRef.current = node;
     if (typeof inViewRef === "function") {
@@ -45,120 +36,139 @@ const Moments: React.FC = () => {
 
   const polaroids = [
     {
-      image: "/moments/appwrite-community.jpeg",
-      description: "Appwrite Delhi community",
-      alt: "Appwrite community",
+      image: "/moments/IMG_7395.JPG",
+      description: "HASMUN'22 Secretary General speech",
+      alt: "HASMUN'22",
     },
     {
-      image: "/moments/avocado-speaker.jpeg",
-      description: "Avo Connect Delhi",
-      alt: "Avocado speaker",
+      image: "/moments/IMG_2262.jpeg",
+      description: "Decision-maker Optimisation Engineering Project ",
+      alt: "Publication",
     },
     {
-      image: "/moments/dinner.png",
-      description: "Team Dinner",
-      alt: "Avocado speaker",
+      image: "/moments/Efe Costu.jpeg",
+      description: "HEADSHOT",
+      alt: "Formal portrait",
     },
     {
-      image: "/moments/breakpoint.jpeg",
-      description: "Solana Breakpoint - Singapore 2024",
-      alt: "Solana Breakpoint",
+      image: "/moments/NKN_8871.JPG",
+      description: "HASMUN'23 Secretary General speech",
+      alt: "el-Presidente",
     },
     {
-      image: "/moments/delhi-meetup.jpeg",
-      description: "Delhi Tech Meetup 2024",
-      alt: "Delhi Tech Meetup",
+      image: "/moments/B15E95A6-61C8-49EC-8655-980ADC53CA67_1_105_c.jpeg",
+      description: "HASMUN'23 Party",
+      alt: "Party moment",
     },
     {
-      image: "/moments/appwrite-coop.png",
-      description: "Appwrite Team❤️",
-      alt: "Appwrite Team",
+      image: "/moments/EC48FE0F-845A-4069-A5C9-F39B866B4D11_1_105_c.jpeg",
+      description: "Alvaro Rodriguez, Turkey's UN Ambassador",
+      alt: "HASMUN Visit",
     },
     {
-      image: "/moments/avocado-laptop.jpeg",
-      description: "Avocado Connect - Bennett University",
-      alt: "Delhi Tech Meetup",
+      image: "/moments/IMG_3785.jpeg",
+      description: "Cutie",
+      alt: ":)))",
     },
     {
-      image: "/moments/first-time-speaker.jpeg",
-      description: "Appwrite Developer Meetup - Delhi",
-      alt: "First time speaking",
+      image: "/moments/B0DC0BBE-A3B6-4E8E-BACE-A0CCAE2B3AC9_1_105_c.jpeg",
+      description: "Public speaking at UEA event",
+      alt: "UEA speech",
     },
     {
-      image: "/moments/s5-graduate.jpeg",
-      description: "Graduated from Buildspace",
-      alt: "Buildspace graduation",
+      image: "/moments/AC87BCDB-36ED-478F-962F-F927B45C77D0_1_105_c.jpeg",
+      description: "SEMT BIZIM EV KIRA",
+      alt: "Evening break",
     },
     {
-      image: "/moments/shefi.jpeg",
-      description: "Shefi - Women in Crypto",
-      alt: "SHEfi community",
+      image: "/moments/AC87BCDB-36ED-478F-962F-F927B45C77D0_1_105_c.jpeg",
+      description: "Minuteman Press Norwich",
+      alt: "Dinner networking",
+    },
+    {
+      image: "/moments/710684A1-65B2-469E-A076-F172807FD4DE_1_105_c.jpeg",
+      description: "HASMUN'23",
+      alt: "HASMUN Fam",
+    },
+    {
+      image: "/moments/5D36DA11-A706-4E66-B608-9F8F843753F4_1_105_c.jpeg",
+      description: "DHL Global Forwarding Istanbul Family",
+      alt: "Workshop group photo",
     },
   ];
 
-  // Continuous auto-scrolling effect that doesn't pause on hover
+  // Auto scroll
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
     let animationId: number;
-    let lastTimestamp: number = 0;
+    let lastTimestamp = 0;
     let scrollPos = 0;
-    const scrollSpeed = 0.5; // Slow and steady scroll speed
-
-    // Calculate max scroll position once
+    const scrollSpeed = 1.5;
     const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
 
     const scroll = (timestamp: number) => {
-      if (!scrollContainer || !inView) return;
-
-      // Throttle animation to reduce CPU usage
+      if (!scrollContainer || !inView || isDragging) return;
       if (timestamp - lastTimestamp > 16) {
-        // ~60fps max
         lastTimestamp = timestamp;
-
         scrollPos += scrollSpeed;
-
-        // Reset when we reach the end - jump back to start smoothly
-        if (scrollPos >= maxScroll) {
-          scrollPos = 0;
-        }
-
+        if (scrollPos >= maxScroll) scrollPos = 0;
         scrollContainer.scrollLeft = scrollPos;
       }
-
       animationId = requestAnimationFrame(scroll);
     };
 
-    // Only start animation if component is in view
-    if (inView) {
-      animationId = requestAnimationFrame(scroll);
-    }
+    if (inView) animationId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animationId);
+  }, [inView, isDragging]);
 
+  // Drag to scroll handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const container = scrollRef.current;
+    if (!container) return;
+    setIsDragging(true);
+    setStartX(e.pageX - container.offsetLeft);
+    setScrollLeft(container.scrollLeft);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return;
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = () => setIsDragging(false);
+  const handleMouseLeave = () => setIsDragging(false);
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mouseleave", handleMouseLeave);
     return () => {
-      cancelAnimationFrame(animationId);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [inView]);
+  });
 
   return (
     <div className="py-8">
-      <h1 className="text-3xl font-bold mb-6 text-[var(--foreground)] px-4">
-        moments
-      </h1>
+      <h1 className="text-3xl font-bold mb-6 text-[var(--foreground)] px-4">moments</h1>
       <div className="max-w-2xl px-4">
         <p className="mb-6 text-base text-[var(--foreground)]">
-          Tbh I&apos;m still figuring it out. Here&apos;s a small glimpse of my
-          journey so far.
+          A visual snapshot of the journey — team wins, solo moments, stage talks, and more.
         </p>
       </div>
 
       <div className="relative w-full overflow-x-hidden overflow-y-visible">
         <div
           ref={setRefs}
-          className="flex carousel overflow-x-auto scrollbar-hide !overflow-y-visible py-4"
+          className="flex cursor-grab carousel overflow-x-auto scrollbar-hide !overflow-y-visible py-4"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          onMouseDown={handleMouseDown}
         >
-          {/* Add polaroids with repeated items at the end for seamless looping */}
           {polaroids.concat(polaroids.slice(0, 5)).map((polaroid, index) => (
             <Polaroid
               key={index}
@@ -170,7 +180,6 @@ const Moments: React.FC = () => {
         </div>
       </div>
 
-      {/* Add this style to hide scrollbar */}
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

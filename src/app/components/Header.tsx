@@ -69,7 +69,7 @@ function Header() {
     <div>
       <div className="flex justify-between items-center p-3 bg-background w-full z-20">
         <div className="flex items-center">
-          <div className="text-base text-[var(--primary)]">Dakshi Goel</div>
+          <div className="text-base text-[var(--primary)]">Efe Costu</div>
         </div>
 
         <div className="flex items-center gap-4">
@@ -88,7 +88,7 @@ function Header() {
                 onClick={() => scrollToSection("projects")}
                 className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
               >
-                projects
+                experience 
               </button>
             </li>
             <li>
@@ -96,7 +96,7 @@ function Header() {
                 onClick={() => scrollToSection("work")}
                 className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
               >
-                work
+                education
               </button>
             </li>
             <li>
@@ -104,7 +104,7 @@ function Header() {
                 onClick={() => scrollToSection("moments")}
                 className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
               >
-                moments
+                worth to mention
               </button>
             </li>
             <li>
@@ -112,7 +112,7 @@ function Header() {
                 onClick={() => scrollToSection("newsletter")}
                 className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
               >
-                newsletter
+                contacté!
               </button>
             </li>
           </ul>
