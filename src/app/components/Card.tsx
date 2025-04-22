@@ -25,14 +25,10 @@ import { Vector3 } from "three";
 
 // Extend Three.js with meshline components
 extend({ MeshLineGeometry, MeshLineMaterial });
-useGLTF.preload(
-  "https://assets.vercel.com/image/upload/contentful/image/e5382hct74si/5huRVDzcoDwnbgrKUo1Lzs/53b6dd7d6b4ffcdbd338fa60265949e1/tag.glb"
-);
+useGLTF.preload("/Dakshie.glb"); // ✅ Local public/ path
 useTexture.preload("/band.png");
 
-// Add proper type declarations for the extended components
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       meshLineGeometry: React.ComponentProps<"mesh">;
@@ -50,14 +46,12 @@ declare global {
   }
 }
 
-// Define types for mesh line ref
 interface MeshLineRef {
   geometry: {
     setPoints: (points: THREE.Vector3[]) => void;
   };
 }
 
-// Define types for GLTF models
 interface CustomGLTFResult extends GLTF {
   nodes: {
     card: THREE.Mesh;
@@ -72,7 +66,6 @@ interface CustomGLTFResult extends GLTF {
   };
 }
 
-// Extend Rigid body to include additional properties
 interface ExtendedRigidBody extends RapierRigidBody {
   lerped?: THREE.Vector3;
 }
@@ -146,7 +139,6 @@ function Band({
   minSpeed = 10,
   position = [0, 0, 0],
 }: BandProps) {
-  // Using the proper type for meshline components
   const band = useRef<MeshLineRef>(null);
   const fixed = useRef<RapierRigidBody>(null);
   const j1 = useRef<ExtendedRigidBody>(null);
@@ -159,24 +151,15 @@ function Band({
     type: "dynamic",
     canSleep: true,
     colliders: false,
-    angularDamping: 3, // Increased from 2 for more stability
-    linearDamping: 3, // Increased from 2 for more stability
+    angularDamping: 3,
+    linearDamping: 3,
   } as const;
 
-  // First cast to unknown, then to CustomGLTFResult to avoid TypeScript casting errors
-  const gltf = useGLTF(
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000/Dakshie.glb"
-      : "https://dakshie.xyz/Dakshie.glb"
-  );
+  const gltf = useGLTF("/Dakshie.glb"); // ✅ Uses local version from /public
   const { nodes, materials } = gltf as unknown as CustomGLTFResult;
-
-  const texture = useTexture(
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000/band.png"
-      : "https://dakshie.xyz/band.png"
-  );
+  const texture = useTexture("/band.png");
   const { width, height } = useThree((state) => state.size);
+
   const [curve] = useState(
     () =>
       new THREE.CatmullRomCurve3([
@@ -189,21 +172,16 @@ function Band({
   const [dragged, drag] = useState<THREE.Vector3 | false>(false);
   const [hovered, hover] = useState(false);
 
-  // Force cast refs to use in joints
   const fixedRef = fixed as unknown as React.RefObject<RapierRigidBody>;
   const j1Ref = j1 as unknown as React.RefObject<RapierRigidBody>;
   const j2Ref = j2 as unknown as React.RefObject<RapierRigidBody>;
   const j3Ref = j3 as unknown as React.RefObject<RapierRigidBody>;
   const cardRef = card as unknown as React.RefObject<RapierRigidBody>;
 
-  // Using slightly longer rope distances to reduce tension
-  useRopeJoint(fixedRef, j1Ref, [[0, 0, 0], [0, 0, 0], 0.8]); // Increased from 1
-  useRopeJoint(j1Ref, j2Ref, [[0, 0, 0], [0, 0, 0], 0.8]); // Increased from 1
-  useRopeJoint(j2Ref, j3Ref, [[0, 0, 0], [0, 0, 0], 0.8]); // Increased from 1
-  useSphericalJoint(j3Ref, cardRef, [
-    [0, 0, 0],
-    [0, 2.35, 0],
-  ]);
+  useRopeJoint(fixedRef, j1Ref, [[0, 0, 0], [0, 0, 0], 0.8]);
+  useRopeJoint(j1Ref, j2Ref, [[0, 0, 0], [0, 0, 0], 0.8]);
+  useRopeJoint(j2Ref, j3Ref, [[0, 0, 0], [0, 0, 0], 0.8]);
+  useSphericalJoint(j3Ref, cardRef, [[0, 0, 0], [0, 2.35, 0]]);
 
   useEffect(() => {
     if (hovered) {
@@ -212,21 +190,17 @@ function Band({
     }
   }, [hovered, dragged]);
 
-  // Use a debounce mechanism to reduce excessive physics updates
   const lastUpdateTime = useRef(0);
 
   useFrame((state, delta) => {
     const currentTime = state.clock.getElapsedTime();
 
-    // Handle dragging with smoother transitions
     if (dragged && card.current) {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
 
-      // Only wake up the bodies when necessary
       if (currentTime - lastUpdateTime.current > 0.016) {
-        // ~60fps cap
         [card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp());
         lastUpdateTime.current = currentTime;
       }
@@ -239,7 +213,6 @@ function Band({
     }
 
     if (fixed.current && band.current) {
-      // Fix most of the jitter when over pulling the card with improved lerping
       [j1, j2].forEach((ref) => {
         const rigidBody = ref.current as ExtendedRigidBody;
         if (rigidBody) {
@@ -249,13 +222,10 @@ function Band({
             );
           }
 
-          // More gradual lerping for smoother movement
           const clampedDistance = Math.max(
             0.1,
             Math.min(1, rigidBody.lerped.distanceTo(rigidBody.translation()))
           );
-
-          // Smoother lerping with adjusted delta
           const lerpSpeed = minSpeed + clampedDistance * (maxSpeed - minSpeed);
           rigidBody.lerped.lerp(
             rigidBody.translation(),
@@ -264,7 +234,6 @@ function Band({
         }
       });
 
-      // Calculate catmull curve with more precision
       if (j3.current && j2.current && j1.current) {
         const j2Body = j2.current as ExtendedRigidBody;
         const j1Body = j1.current as ExtendedRigidBody;
@@ -274,17 +243,14 @@ function Band({
         if (j1Body.lerped) curve.points[2].copy(j1Body.lerped);
         curve.points[3].copy(fixed.current.translation());
 
-        // Increased point count for smoother curve
-        band.current.geometry.setPoints(curve.getPoints(64)); // Increased from 32
+        band.current.geometry.setPoints(curve.getPoints(64));
 
-        // More gentle tilt correction to prevent jitter
         if (card.current) {
           ang.copy(card.current.angvel());
           rot.copy(card.current.rotation());
-          // Fix the setAngvel call with proper wake parameter
           card.current.setAngvel(
             { x: ang.x, y: ang.y - rot.y * 0.2, z: ang.z },
-            true // Wake the body
+            true
           );
         }
       }
@@ -344,35 +310,27 @@ function Band({
                 clearcoatRoughness={0.15}
                 roughness={0.3}
                 metalness={0.5}
-                transparent={true} // Enable transparency on the material
+                transparent={true}
               />
             </mesh>
-            <mesh
-              geometry={nodes.clip.geometry}
-              material={materials.metal}
-              material-roughness={0.3}
-            />
+            <mesh geometry={nodes.clip.geometry} material={materials.metal} />
             <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
           </group>
         </RigidBody>
       </group>
       {React.createElement("mesh", { ref: band }, [
-        React.createElement("meshLineGeometry", { key: "geometry" }, null),
-        React.createElement(
-          "meshLineMaterial",
-          {
-            key: "material",
-            color: "white",
-            depthTest: false,
-            resolution: [width, height],
-            useMap: true,
-            map: texture,
-            repeat: [-3, 1],
-            lineWidth: 1,
-            transparent: true,
-          },
-          null
-        ),
+        React.createElement("meshLineGeometry", { key: "geometry" }),
+        React.createElement("meshLineMaterial", {
+          key: "material",
+          color: "white",
+          depthTest: false,
+          resolution: [width, height],
+          useMap: true,
+          map: texture,
+          repeat: [-3, 1],
+          lineWidth: 1,
+          transparent: true,
+        }),
       ])}
     </>
   );
