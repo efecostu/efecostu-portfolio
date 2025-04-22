@@ -23,9 +23,8 @@ import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import { GLTF } from "three-stdlib";
 import { Vector3 } from "three";
 
-// Extend Three.js with meshline components
 extend({ MeshLineGeometry, MeshLineMaterial });
-useGLTF.preload("/Dakshie.glb"); // ✅ Local public/ path
+useGLTF.preload("/moments/Dakshie.glb");
 useTexture.preload("/band.png");
 
 declare global {
@@ -94,34 +93,10 @@ export default function Card() {
           <Band position={[0, 0, 0]} />
         </Physics>
         <Environment background={false}>
-          <Lightformer
-            intensity={2}
-            color="white"
-            position={[0, -1, 5]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={3}
-            color="white"
-            position={[-1, -1, 1]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={3}
-            color="white"
-            position={[1, 1, 1]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={10}
-            color="white"
-            position={[-10, 0, 14]}
-            rotation={[0, Math.PI / 2, Math.PI / 3]}
-            scale={[100, 10, 1]}
-          />
+          <Lightformer intensity={2} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+          <Lightformer intensity={3} color="white" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+          <Lightformer intensity={3} color="white" position={[1, 1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+          <Lightformer intensity={10} color="white" position={[-10, 0, 14]} rotation={[0, Math.PI / 2, Math.PI / 3]} scale={[100, 10, 1]} />
         </Environment>
       </Canvas>
     </div>
@@ -134,11 +109,7 @@ interface BandProps {
   position?: [number, number, number];
 }
 
-function Band({
-  maxSpeed = 50,
-  minSpeed = 10,
-  position = [0, 0, 0],
-}: BandProps) {
+function Band({ maxSpeed = 50, minSpeed = 10, position = [0, 0, 0] }: BandProps) {
   const band = useRef<MeshLineRef>(null);
   const fixed = useRef<RapierRigidBody>(null);
   const j1 = useRef<ExtendedRigidBody>(null);
@@ -146,7 +117,7 @@ function Band({
   const j3 = useRef<ExtendedRigidBody>(null);
   const card = useRef<RapierRigidBody>(null);
 
-  const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3(); // prettier-ignore
+  const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3();
   const segmentProps = {
     type: "dynamic",
     canSleep: true,
@@ -155,20 +126,12 @@ function Band({
     linearDamping: 3,
   } as const;
 
-  const gltf = useGLTF("/Dakshie.glb"); // ✅ Uses local version from /public
+  const gltf = useGLTF("/moments/Dakshie.glb");
   const { nodes, materials } = gltf as unknown as CustomGLTFResult;
   const texture = useTexture("/band.png");
   const { width, height } = useThree((state) => state.size);
 
-  const [curve] = useState(
-    () =>
-      new THREE.CatmullRomCurve3([
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-      ])
-  );
+  const [curve] = useState(() => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]));
   const [dragged, drag] = useState<THREE.Vector3 | false>(false);
   const [hovered, hover] = useState(false);
 
@@ -194,64 +157,42 @@ function Band({
 
   useFrame((state, delta) => {
     const currentTime = state.clock.getElapsedTime();
-
     if (dragged && card.current) {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
-
       if (currentTime - lastUpdateTime.current > 0.016) {
         [card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp());
         lastUpdateTime.current = currentTime;
       }
-
       card.current.setNextKinematicTranslation({
         x: vec.x - dragged.x,
         y: vec.y - dragged.y,
         z: vec.z - dragged.z,
       });
     }
-
     if (fixed.current && band.current) {
       [j1, j2].forEach((ref) => {
         const rigidBody = ref.current as ExtendedRigidBody;
         if (rigidBody) {
-          if (!rigidBody.lerped) {
-            rigidBody.lerped = new THREE.Vector3().copy(
-              rigidBody.translation()
-            );
-          }
-
-          const clampedDistance = Math.max(
-            0.1,
-            Math.min(1, rigidBody.lerped.distanceTo(rigidBody.translation()))
-          );
+          if (!rigidBody.lerped) rigidBody.lerped = new THREE.Vector3().copy(rigidBody.translation());
+          const clampedDistance = Math.max(0.1, Math.min(1, rigidBody.lerped.distanceTo(rigidBody.translation())));
           const lerpSpeed = minSpeed + clampedDistance * (maxSpeed - minSpeed);
-          rigidBody.lerped.lerp(
-            rigidBody.translation(),
-            Math.min(1, delta * lerpSpeed)
-          );
+          rigidBody.lerped.lerp(rigidBody.translation(), Math.min(1, delta * lerpSpeed));
         }
       });
-
       if (j3.current && j2.current && j1.current) {
         const j2Body = j2.current as ExtendedRigidBody;
         const j1Body = j1.current as ExtendedRigidBody;
-
         curve.points[0].copy(j3.current.translation());
         if (j2Body.lerped) curve.points[1].copy(j2Body.lerped);
         if (j1Body.lerped) curve.points[2].copy(j1Body.lerped);
         curve.points[3].copy(fixed.current.translation());
-
         band.current.geometry.setPoints(curve.getPoints(64));
-
         if (card.current) {
           ang.copy(card.current.angvel());
           rot.copy(card.current.rotation());
-          card.current.setAngvel(
-            { x: ang.x, y: ang.y - rot.y * 0.2, z: ang.z },
-            true
-          );
+          card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.2, z: ang.z }, true);
         }
       }
     }
@@ -273,12 +214,7 @@ function Band({
         <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}>
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody
-          position={[2, 0, 0]}
-          ref={card}
-          {...segmentProps}
-          type={dragged ? "kinematicPosition" : "dynamic"}
-        >
+        <RigidBody position={[2, 0, 0]} ref={card} {...segmentProps} type={dragged ? "kinematicPosition" : "dynamic"}>
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
             scale={3}
@@ -294,11 +230,7 @@ function Band({
               const target = e.target as HTMLElement;
               target.setPointerCapture(e.pointerId);
               if (card.current) {
-                drag(
-                  new Vector3()
-                    .copy(e.point)
-                    .sub(vec.copy(card.current.translation()))
-                );
+                drag(new Vector3().copy(e.point).sub(vec.copy(card.current.translation())));
               }
             }}
           >
