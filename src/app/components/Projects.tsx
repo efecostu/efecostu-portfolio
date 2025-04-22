@@ -114,7 +114,7 @@ const projects = [
   },
   {
     title: "Jobwrite",
-    link: "https://jobwrite-yt.vercel.app",
+    link: "https://github.com/Dksie09/jobwriteYT",
     logo: "/projects/jobwrite.png",
     description:
       "Smart job search assistant. scans your github and finds jobs for you.",
