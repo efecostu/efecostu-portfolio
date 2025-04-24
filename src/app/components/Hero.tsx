@@ -154,7 +154,7 @@ const Hero: React.FC = () => {
   return (
     <div className="py-8 px-4">
       <h1 className="text-3xl font-bold mb-6 text-[var(--foreground)]">
-        Hi, I’m Efe Coştu 👋
+        Hi, Efe Costu 👋
       </h1>
       <div className="max-w-2xl">
         <p className="mb-4 text-base text-[var(--foreground)]">

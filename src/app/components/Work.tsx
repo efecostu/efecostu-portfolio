@@ -64,25 +64,32 @@ const EducationItem: React.FC<EducationProps> = ({
 
 const educationData = [
   {
-    degree: "MSc Business Management (GPA 3.8 / 4.0)",
+    degree: "MSc Business Management (GPA 3.80 / 4.0)",
     institution: "University of East Anglia, Norwich, UK",
-    logo: "/education/ucp.png",
+    logo: "/companies/ucp.png",
     description: "Focused on project management, marketing and leadership in a global business context.",
-    preview: "/education/ucp-preview.jpg",
+    preview: "/companies/ucp.png",
   },
   {
-    degree: "BSc Industrial Engineering (GPA 3.3 / 4.0)",
+    degree: "BSc Industrial Engineering (GPA 3.17 / 4.0)",
     institution: "Kadir Has University, Istanbul, Turkey",
-    logo: "/education/khas.png",
-    description: "Graduated with honors. Erasmus in Czechia. Relevant coursework: operations research, data analysis.",
-    preview: "/education/khas-preview.jpg",
+    logo: "/companies/khas.png",
+    description: "Graduated with honors. Academic Publication on Decision-making Algortihms.  Relevant coursework: operations research, data analysis.",
+    preview: "/companies/khas.png",
   },
   {
-    degree: "Extracurricular",
+    degree: "International Baccalaureate (IB)",
+    institution: "Bahceselir High School, Istanbul, Turkey",
+    logo: "/companies/bk.png",
+    description: "Graduated with honors. Academic Publication on Decision-making Algortihms.  Relevant coursework: operations research, data analysis.",
+    preview: "/companies/bk.png",
+  },
+  {
+    degree: "Extracurricular Activities",
     institution: "hasmun.org",
-    logo: "/education/hasmun.png",
+    logo: "/companies/hasmun.jpeg",
     description: "Organized international Model UN events, led committees, mentored student delegates.",
-    preview: "/education/hasmun-preview.jpg",
+    preview: "/companies/hasmun.jpeg",
   }
 ];
 
