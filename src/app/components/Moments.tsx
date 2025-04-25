@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image"; // ✅ Eklendi
 
 interface PolaroidProps {
   image: string;
@@ -10,8 +11,14 @@ interface PolaroidProps {
 
 const Polaroid: React.FC<PolaroidProps> = ({ image, description, alt }) => (
   <div className="polaroid-card min-w-[200px] sm:min-w-80 bg-white p-2 sm:p-4 pb-4 sm:pb-6 shadow-xl m-2 sm:m-4 transition-transform duration-300 hover:-rotate-2 hover:scale-105 relative before:absolute before:inset-0 before:shadow-md before:content-[''] before:z-[-1]">
-    <div className="mb-2 sm:mb-4 h-48 sm:h-80 overflow-hidden">
-      <img src={image} alt={alt} className="w-full h-full object-cover" loading="lazy" />
+    <div className="mb-2 sm:mb-4 h-48 sm:h-80 overflow-hidden relative">
+      <Image
+        src={image}
+        alt={alt}
+        fill
+        className="object-cover"
+        loading="lazy"
+      />
     </div>
     <div className="polaroid-text text-xs sm:text-sm text-black p-1 sm:p-2 text-center">
       {description}
@@ -97,7 +104,6 @@ const Moments: React.FC = () => {
     },
   ];
 
-  // Auto scroll
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
@@ -110,7 +116,7 @@ const Moments: React.FC = () => {
 
     const scroll = (timestamp: number) => {
       if (!scrollContainer || !inView || isDragging) return;
-      if (timestamp - lastTimestamp > 16) {
+      if (timestamp - lastTimestamp > 20) { // optimize
         lastTimestamp = timestamp;
         scrollPos += scrollSpeed;
         if (scrollPos >= maxScroll) scrollPos = 0;
@@ -123,7 +129,6 @@ const Moments: React.FC = () => {
     return () => cancelAnimationFrame(animationId);
   }, [inView, isDragging]);
 
-  // Drag to scroll handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     const container = scrollRef.current;
     if (!container) return;
@@ -169,7 +174,7 @@ const Moments: React.FC = () => {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           onMouseDown={handleMouseDown}
         >
-          {polaroids.concat(polaroids.slice(0, 5)).map((polaroid, index) => (
+          {polaroids.map((polaroid, index) => (
             <Polaroid
               key={index}
               image={polaroid.image}
