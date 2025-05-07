@@ -105,7 +105,7 @@ const experiences = [
 ];
 
 const preloadMedia = (preview: string) => {
-  const img = new Image();
+  const img = new window.Image();
   img.src = preview;
 };
 
