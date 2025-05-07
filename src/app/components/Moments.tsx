@@ -53,14 +53,14 @@ const Moments: React.FC = () => {
       alt: "Publication",
     },
     {
-      image: "/moments/Efe Costu.jpeg",
-      description: "HEADSHOT",
-      alt: "Formal portrait",
-    },
-    {
       image: "/moments/NKN_8871.JPG",
       description: "HASMUN'23 Secretary General speech",
       alt: "el-Presidente",
+    },
+    {
+      image: "/moments/5D36DA11-A706-4E66-B608-9F8F843753F4_1_105_c.jpeg",
+      description: "DHL Global Forwarding Istanbul Family",
+      alt: "Workshop group photo",
     },
     {
       image: "/moments/B15E95A6-61C8-49EC-8655-980ADC53CA67_1_105_c.jpeg",
@@ -73,14 +73,9 @@ const Moments: React.FC = () => {
       alt: "HASMUN Visit",
     },
     {
-      image: "/moments/IMG_3785.jpeg",
-      description: "Cutie",
-      alt: ":)))",
-    },
-    {
       image: "/moments/B0DC0BBE-A3B6-4E8E-BACE-A0CCAE2B3AC9_1_105_c.jpeg",
-      description: "Public speaking at UEA event",
-      alt: "UEA speech",
+      description: "SynctheCITY Event Business",
+      alt: "United Kingdom",
     },
     {
       image: "/moments/AC87BCDB-36ED-478F-962F-F927B45C77D0_1_105_c.jpeg",
@@ -88,7 +83,7 @@ const Moments: React.FC = () => {
       alt: "Evening break",
     },
     {
-      image: "/moments/AC87BCDB-36ED-478F-962F-F927B45C77D0_1_105_c.jpeg",
+      image: "/moments/9F7C0010-B923-43B9-B95E-D31214C4247A_1_105_c",
       description: "Minuteman Press Norwich",
       alt: "Dinner networking",
     },
@@ -96,11 +91,6 @@ const Moments: React.FC = () => {
       image: "/moments/710684A1-65B2-469E-A076-F172807FD4DE_1_105_c.jpeg",
       description: "HASMUN'23",
       alt: "HASMUN Fam",
-    },
-    {
-      image: "/moments/5D36DA11-A706-4E66-B608-9F8F843753F4_1_105_c.jpeg",
-      description: "DHL Global Forwarding Istanbul Family",
-      alt: "Workshop group photo",
     },
   ];
 
