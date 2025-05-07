@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
 interface LinkWithTooltipProps {
   href?: string;
@@ -105,9 +106,11 @@ const LinkWithTooltip: React.FC<LinkWithTooltipProps> = ({
         >
           {imageUrl && (
             <div className="w-full h-40 overflow-hidden rounded mb-2">
-              <img
+              <Image
                 src={imageUrl}
                 alt="tooltip illustration"
+                width={500}
+                height={300}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -162,7 +165,7 @@ const Hero: React.FC = () => {
         </p>
 
         <p className="mb-8 text-base text-[var(--foreground)]">
-          With a background in <LinkWithTooltip text="Industrial Engineering" description="Data analysis, supply chain management, SAP usage" /> and a master&apos;s in <LinkWithTooltip text="Business Management" description="Sales strategy, financial performance, project coordination" />, I’ve supported operations in Turkey and the UK—optimizing logistics, developing predictive maintenance systems, and designing SEO-optimized websites.
+          With a background in <LinkWithTooltip text="Industrial Engineering" description="Data analysis, supply chain management, SAP usage" /> and a master&apos;s in <LinkWithTooltip text="Business Management" description="Sales strategy, financial performance, project coordination" />, I've supported operations in Turkey and the UK—optimizing logistics, developing predictive maintenance systems, and designing SEO-optimized websites.
         </p>
 
         <div className="my-8">
@@ -175,11 +178,11 @@ const Hero: React.FC = () => {
         </div>
 
         <p className="mb-8 text-base text-[var(--foreground)]">
-          I’ve collaborated with DHL, SKF, and SMEs on both technical and strategic goals.
+          I've collaborated with DHL, SKF, and SMEs on both technical and strategic goals.
         </p>
 
         <p className="mb-8 text-base text-[var(--foreground)]">
-          I’m also a former student union president and active community builder in youth-led events and international summits.
+          I'm also a former student union president and active community builder in youth-led events and international summits.
         </p>
       </div>
       <div className="flex gap-5 mt-8">
