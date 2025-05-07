@@ -83,7 +83,7 @@ const Moments: React.FC = () => {
       alt: "Evening break",
     },
     {
-      image: "/moments/9F7C0010-B923-43B9-B95E-D31214C4247A_1_105_c",
+      image: "/moments/9F7C0010-B923-43B9-B95E-D31214C4247A_1_105_c.jpeg",
       description: "Minuteman Press Norwich",
       alt: "Dinner networking",
     },
