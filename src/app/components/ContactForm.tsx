@@ -26,6 +26,7 @@ export default function ContactForm() {
       setStatus("success");
       setMessage("");
     } catch (error) {
+      console.error("Error sending message:", error);
       setStatus("error");
     }
   };
