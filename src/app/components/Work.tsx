@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 interface EducationProps {
   degree: string;
@@ -22,10 +23,12 @@ const EducationItem: React.FC<EducationProps> = ({
     <div className="mb-8">
       <div className="flex items-start">
         <div className="w-10 h-10 mr-4 flex-shrink-0">
-          <img
+          <Image
             src={logo}
             alt={`${institution} logo`}
-            className="w-full h-full rounded-full  object-cover border border-[var(--border)]"
+            width={40}
+            height={40}
+            className="w-full h-full rounded-full object-cover border border-[var(--border)]"
           />
         </div>
 
@@ -42,9 +45,11 @@ const EducationItem: React.FC<EducationProps> = ({
             {isHovered && preview && (
               <div className="absolute z-10 left-full ml-4 top-0 w-72 p-2 shadow-lg bg-[var(--tooltip)] border border-[var(--tooltip-border)] rounded text-sm text-[var(--tooltip-foreground)]">
                 <div className="w-full h-40 overflow-hidden rounded mb-2">
-                  <img
+                  <Image
                     src={preview}
                     alt={`${institution} preview`}
+                    width={288}
+                    height={192}
                     className="w-full h-full object-cover"
                   />
                 </div>
