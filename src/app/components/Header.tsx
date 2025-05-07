@@ -59,11 +59,11 @@ function Header() {
 
         <div className="flex items-center gap-4">
           <ul className="hidden sm:flex items-center gap-4 social-link">
-            {["about", "experience", "education", "worth to mention", "contacté!"].map((text, idx) => (
+            {["about", "experience", "education", "worth to mention", "contact"].map((text, idx) => (
               <li key={text}>
                 <button
                   onClick={() => scrollToSection(
-                    ["hero", "projects", "work", "moments", "newsletter"][idx]
+                    ["hero", "projects", "work", "moments", "contact"][idx]
                   )}
                   className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                 >
@@ -106,11 +106,11 @@ function Header() {
       {isMenuOpen && (
         <div className="sm:hidden fixed inset-0 top-[57px] bg-background z-50">
           <ul className="flex flex-col items-center gap-6 pt-8">
-            {["about", "projects", "work", "moments", "newsletter"].map((text, idx) => (
+            {["about", "projects", "work", "moments", "contact"].map((text, idx) => (
               <li key={text}>
                 <button
                   onClick={() => scrollToSection(
-                    ["hero", "projects", "work", "moments", "newsletter"][idx]
+                    ["hero", "projects", "work", "moments", "contact"][idx]
                   )}
                   className="text-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                 >

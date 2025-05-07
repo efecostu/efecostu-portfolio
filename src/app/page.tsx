@@ -8,7 +8,7 @@ import { ThemeProvider } from "./theme-provider";
 import Projects from "./components/Projects";
 import Work from "./components/Work";
 import Moments from "./components/Moments";
-import ComingSoon from "./components/Newsletter";
+import ContactForm from "./components/ContactForm";
 
 export default function Home() {
   const [cardHeight, setCardHeight] = useState("100vh");
@@ -102,8 +102,8 @@ export default function Home() {
           </div>
 
           <hr className="border-t relative w-screen left-[50%] right-[50%] -translate-x-[50%] my-8" />
-          <div className="relative min-h-[50vh] w-full z-0" id="newsletter">
-            <ComingSoon />
+          <div className="relative min-h-[50vh] w-full z-0" id="contact">
+            <ContactForm />
           </div>
           <hr className="border-t relative w-screen left-[50%] right-[50%] -translate-x-[50%] my-8" />
         </div>
