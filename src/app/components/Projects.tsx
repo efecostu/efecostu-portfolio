@@ -28,7 +28,7 @@ const ExperienceItem: React.FC<ExperienceProps> = ({
             alt={`${company} logo`}
             width={40}
             height={40}
-            className="w-full h-full rounded-full  object-cover border border-[var(--border)]"
+            className="w-full h-full rounded-full object-cover border border-[var(--border)]"
           />
         </div>
 
@@ -89,7 +89,8 @@ const experiences = [
     description: "Supported the sales team in customer relations and reporting at an automotive manufacturer.",
     preview: "/projects/arkpres.png",
   },
-  {title: "Teaching Assistant for Industial Engineering",
+  {
+    title: "Teaching Assistant for Industial Engineering",
     company: "Kadir Has University",
     logo: "/projects/khas.png",
     description: "Assisted in teaching and grading for the Industrial Engineering department, focusing on operations research and optimization.",
@@ -104,14 +105,10 @@ const experiences = [
   },
 ];
 
-const preloadMedia = (preview: string) => {
-  const img = new window.Image();
-  img.src = preview;
-};
-
 const Experience: React.FC = () => {
   useEffect(() => {
-    experiences.forEach(({ preview }) => preloadMedia(preview || ""));
+    // Resimleri önbelleğe alma işlemini kaldırdık
+    // Bu işlem Next.js'in Image komponenti tarafından otomatik olarak yapılıyor
   }, []);
 
   return (

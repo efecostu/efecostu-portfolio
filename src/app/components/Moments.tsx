@@ -90,7 +90,7 @@ const Moments: React.FC = () => {
     {
       image: "/moments/710684A1-65B2-469E-A076-F172807FD4DE_1_105_c.jpeg",
       description: "HASMUN'23",
-      alt: "HASMUN Fam",
+      alt: "HASMUN Family",
     },
   ];
 
