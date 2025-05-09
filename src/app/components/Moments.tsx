@@ -27,7 +27,7 @@ const Polaroid: React.FC<PolaroidProps> = ({ image, description, alt }) => (
 );
 
 const Moments: React.FC = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null) as React.MutableRefObject<HTMLDivElement | null>;
   const { ref: inViewRef, inView } = useInView({ threshold: 0.1, triggerOnce: false });
 
   const [isDragging, setIsDragging] = useState(false);
